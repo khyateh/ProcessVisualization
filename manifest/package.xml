@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>PV_DashBoardController</members>
+        <members>PV_SupplierDashBoardLookupController</members>
+        <members>PV_SupplierDashBoardController</members>
+         <members>PV_RoleUtils</members>
+         <members>PV_processVisualization_Test</members>
+         <members>PV_VehicleActivity_Test</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>PV_VehicleActivity</members>
+        <name>ApexTrigger</name>
+    </types>
+     <types>
+        <members>PV_ProcessDashboard</members>
+        <name>StaticResource</name>
+    </types>
+    <types>
+        <members>PV_SupplierDashBoard</members>
+        <members>PV_SupplierDashBoardLookup</members>
+        <members>PV_SupplierDashBoardLookupChild</members>
+        <members>PV_DashBoard</members>
+        <members>PV_MapComponent</members>
+        <members>PV_SupplierDashBoardLookupEve</members>
+        <name>AuraDefinitionBundle</name>
+    </types>
+    <version>45.0</version>
+</Package>

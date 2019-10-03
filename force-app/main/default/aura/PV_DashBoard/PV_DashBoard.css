@@ -1,0 +1,248 @@
+.THIS {
+}.THIS .custombutton{
+    margin-top:22px;
+}
+.THIS .corners {
+    
+  border-radius: 18px;
+  background-color:green;
+    
+}
+.THIS .dot {
+  height: 30px;
+  width: 30px;
+  background-color:green;
+  display: inline-block;
+}
+.THIS .dot1 {
+ height: 30px;
+  width: 30px;
+  background-color:#00b359;
+  display: inline-block;
+}
+.THIS .dot2 {
+ height: 30px;
+  width: 30px;
+  background-color:lightblue;
+  display: inline-block;
+}
+.THIS .dot3 {
+ height: 30px;
+  width: 30px;
+  background-color:red;
+  display: inline-block;
+}
+.THIS .dot4 {
+ height: 30px;
+  width: 30px;
+  background-color:yellow;
+  display: inline-block;
+}
+.THIS .dot5 {
+ height: 30px;
+  width: 30px;
+  background-color:orange;
+  display: inline-block;
+}
+
+
+.THIS .slds-th__action {
+    padding: 0;
+    height: 2.6rem;
+}
+.THIS .cornerswhite {
+  
+  background-color:white;
+    
+}
+
+.THIS .cornersRed {
+  border-radius: 25px;
+  background-color:red;
+    
+}
+
+.THIS .cornersDarkGreen {
+  border-radius: 25px;
+  background-color:green;
+}
+.THIS .cornersBlue {
+  border-radius: 25px;
+  background-color:lightblue;
+    
+}
+.THIS .cornersLightGreen {
+  border-radius: 25px;
+  background-color:lightgreen;
+    
+}
+
+/* @media (pointer:none), (pointer:coarse) {
+   .THIS .slds-scrollable {
+     padding-left: 30em !important;
+     margin-left: 0 !important;
+ }
+} */
+
+.THIS html {
+  box-sizing: border-box;
+}
+.THIS *,
+.THIS *:before,
+.THIS *:after {
+  box-sizing: inherit;
+}
+
+.THIS .table-scroll {
+  position: relative;
+  width:100%;
+  z-index: 1;
+  margin: auto;
+  overflow: auto;
+  height: 350px;
+  -webkit-overflow-scrolling: auto;
+}
+.THIS .table-scroll table {
+  width: 100%;
+  min-width: 1280px;
+  margin: auto;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.THIS .table-wrap {
+  position: relative;
+}
+
+.THIS .table-scroll th,
+.THIS .table-scroll td {
+  padding: 5px 10px;
+  vertical-align: top;
+}
+
+.THIS .staticTH {
+  position: -webkit-sticky;
+  position: sticky;
+  top: -0.1em;
+}
+/* safari and ios need the tfoot itself to be position:sticky also */
+.THIS .table-scroll tfoot,
+.THIS .table-scroll tfoot th,
+.THIS .table-scroll tfoot td {
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  z-index:4;
+}
+
+.THIS .dynamicTH {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 2em !important;
+}
+
+.THIS .staticTH:nth-child(1) {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 0em;
+  z-index: 7;
+}
+
+.THIS .staticTH:nth-child(2) {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 7em;
+  z-index: 7;
+}
+
+.THIS .staticTH:nth-child(3) {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 14em;
+  z-index: 7;
+     min-width: 8em;
+}
+
+.THIS .staticTH:nth-child(4) {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 22em;		  
+  min-width: 8em;
+  z-index: 7;
+}
+
+.THIS .staticTH:nth-child(5) {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 30em;
+  z-index: 7;
+     min-width: 8em;
+}
+
+.THIS .staticTD:nth-child(4) .slds-truncate {
+    max-width: 6em;
+}
+
+.THIS .staticTD:nth-child(5) .slds-truncate {
+    max-width: 8em;
+}
+
+
+.THIS .staticTD:nth-child(1) {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 0em;
+  z-index: 6;
+}
+
+.THIS .staticTD:nth-child(2) {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 7em;
+  z-index: 6;
+}
+
+.THIS .staticTD:nth-child(3) {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 14em;
+  z-index: 6;
+    
+}
+
+.THIS .staticTD:nth-child(4) {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 22em;
+  z-index: 6;
+}
+
+.THIS .staticTD:nth-child(5) {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 30em;
+  z-index: 6;
+}
+
+.THIS td {
+  background:  rgb(255, 255, 255);
+}
+
+.THIS .slds-table th {
+    background:  rgb(250, 250, 249);
+    border: none;
+}
+
+.THIS thead th,
+.THIS tfoot th {
+  z-index: 5;
+}
+
+
+.THIS .orange{
+    background-color:orange;
+}
+
+.THIS .yellow{
+    background-color:yellow;
+}

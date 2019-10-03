@@ -1,0 +1,268 @@
+<aura:component controller = "PV_SupplierDashBoardController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    
+    <!--Static resource attribute -->
+    <ltng:require scripts="{!$Resource.PV_ProcessDashboard}" />
+    
+    <!--component attributes for date's -->
+    <aura:attribute name="Spinner" type="boolean" default="false"/>
+    <aura:attribute name = "dateList" type = "List"/>
+    <aura:attribute name = "DateFrom" type = "Date" />
+    <aura:attribute name = "DateTo" type = "Date" />
+    <aura:attribute name = "dateHeaderList" type = "List"/>
+    <aura:attribute name = "startHeaderDate" type = "Date" />
+    <aura:attribute name = "endHeaderDate" type = "Date" /> 
+    
+    <!--sorting -->
+    <aura:attribute type="String"  name="sortField" />		
+    <aura:attribute type="Boolean"	name="sortAsc" />
+    
+    <!--Order's list return from server -->
+    <aura:attribute name="orderList" type="List" description="use for store and display Order list return from server"/>
+    
+    <!--Lookup  -->
+    <aura:attribute name="selectedLookUpRecord" type="sObject" default="{}"/>
+    
+  
+    <!--Doinit  -->
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+    <aura:if isTrue="{!v.Spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+    
+    <!--Component Start-->
+    <article class="slds-card" style="width:100%;">
+        <div class="Hide">
+            <lightning:layout>
+                <lightning:layoutItem size="12" padding="around-small">
+                    <div class="slds-m-around_medium">
+                        <!-- SEARCH INPUT AND SEARCH BUTTON--> 
+                        <lightning:layout>
+                            <lightning:layoutItem size="3" padding="around-small">
+                                <lightning:input type = "Date" aura:id="StartDateField" value="{!v.DateFrom}" displayDatePicker="true"  label="{!$Label.c.PV_Planned_Date_From}"/>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="3" padding="around-small">
+                                <lightning:input type = "Date" aura:id="EndDateField" value="{!v.DateTo}" displayDatePicker="true" 	 label="{!$Label.c.PV_Planned_Date_To}"/>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="3" padding="around-small">
+                                <c:PV_SupplierDashBoardLookup objectAPIName="Supplier__c" IconName="standard:account" selectedRecord="{!v.selectedLookUpRecord}" label="{!$Label.c.PV_Supplier_Name}"/>
+                                
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="3" padding="around-small" class= "custombutton">
+                                <lightning:button onclick="{!c.Filterresults}"
+                                                  variant="brand"
+                                                  label="{!$Label.c.PV_Filter_Results}"/>
+                                
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </div>
+                    
+                    <div aura:id="NoRecord" class="slds-hide">
+                        {!$Label.c.PV_NRF}
+                    </div>
+                    <div  aura:id="showtable" class="slds-scrollable">
+                        <div id="table-scroll" class="table-scroll">
+                            <table class="slds-table slds-no-row-hover slds-table_bordered">
+                                
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        
+                                        
+                                        <th class="staticTH" rowspan="2" data-value="CPDD__c" scope="col" onclick="{!c.sortByColumn}">
+                                            <a href="javascript:void(0);" class="slds-th__action slds-text-link_reset" >
+                                                <span class="slds-assistive-text">Sort</span>
+                                                <span class="slds-truncate" title="{!$Label.c.PV_Supplier_CPDD}"> {!$Label.c.PV_Supplier_CPDD}
+                                                </span>
+                                                <aura:if isTrue="{!v.sortField=='CPDD__c'}">
+                                                    <span>
+                                                        <aura:if isTrue="{!v.sortAsc}">
+                                                            <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                                            <aura:set attribute="else">
+                                                                <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                                            </aura:set>
+                                                        </aura:if>
+                                                    </span>
+                                                </aura:if>   
+                                            </a>
+                                        </th>                                
+                                        <th class="staticTH" rowspan="2" data-value="CDD__c" scope="col"  onclick="{!c.sortByColumn}">
+                                            <a href="javascript:void(0);" class="slds-th__action slds-text-link_reset">
+                                                <span class="slds-assistive-text">Sort</span>
+                                                <span class="slds-truncate" title="{!$Label.c.PV_Supplier_CDD}">{!$Label.c.PV_Supplier_CDD}</span>
+                                                <aura:if isTrue="{!v.sortField=='CDD__c'}">
+                                                    <span>
+                                                        <aura:if isTrue="{!v.sortAsc}">
+                                                            <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                                            <aura:set attribute="else">
+                                                                <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                                            </aura:set>
+                                                        </aura:if>
+                                                    </span>
+                                                </aura:if>   
+                                            </a>
+                                        </th>
+                                        <th class="staticTH" rowspan="2" data-value="User_Role__c" scope="col"  onclick="{!c.sortByColumn}">
+                                            <a href="javascript:void(0);" class="slds-th__action slds-text-link_reset">
+                                                <span class="slds-assistive-text">Sort</span>
+                                                <span class="slds-truncate" title="{!$Label.c.PV_Supplier_Salesteam}">{!$Label.c.PV_Supplier_Salesteam}</span>
+                                                <aura:if isTrue="{!v.sortField=='User_Role__c'}">
+                                                    <span>
+                                                        <aura:if isTrue="{!v.sortAsc}">
+                                                            <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                                            <aura:set attribute="else">
+                                                                <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                                            </aura:set>
+                                                        </aura:if>
+                                                    </span>
+                                                </aura:if>   
+                                            </a>
+                                        </th>
+
+                                        <th class="staticTH" rowspan="2" data-value="Sales_Person__c" scope="col" onclick="{!c.sortByColumn}">
+                                            <a href="javascript:void(0);" class="slds-th__action slds-text-link_reset">
+                                                <span class="slds-assistive-text">Sort</span>
+                                                <span class="slds-truncate" title="{!$Label.c.PV_Supplier_CA}">{!$Label.c.PV_Supplier_CA}</span>
+                                                <aura:if isTrue="{!v.sortField=='Sales_Person__c'}">
+                                                    <span>
+                                                        <aura:if isTrue="{!v.sortAsc}">
+                                                            <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                                            <aura:set attribute="else">
+                                                                <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                                            </aura:set>
+                                                        </aura:if>
+                                                    </span>
+                                                </aura:if>   
+                                            </a>                               
+                                        </th>
+                                        
+                                        <th class="staticTH" rowspan="2" data-value="Name" scope="col" onclick="{!c.sortByColumn}">
+                                            <a href="javascript:void(0);" class="slds-th__action slds-text-link_reset">
+                                                <span class="slds-assistive-text">Sort</span>
+                                                <span class="slds-truncate" title="{!$Label.c.PV_Supplier_Order}">{!$Label.c.PV_Supplier_Order}</span>
+                                                <aura:if isTrue="{!v.sortField=='Name'}">
+                                                    <span>
+                                                        <aura:if isTrue="{!v.sortAsc}">
+                                                            <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                                            <aura:set attribute="else">
+                                                                <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                                            </aura:set>
+                                                        </aura:if>
+                                                    </span>
+                                                </aura:if>   
+                                            </a>  
+                                        </th>                                
+                                        <th class="staticTH" rowspan="2" data-value="End_Customer__c" scope="col" onclick="{!c.sortByColumn}">
+                                            <a href="javascript:void(0);" class="slds-th__action slds-text-link_reset">
+                                                <span class="slds-assistive-text">Sort</span>
+                                                <span class="slds-truncate" title="{!$Label.c.PV_Customer}">{!$Label.c.PV_Customer}</span>
+                                                <aura:if isTrue="{!v.sortField=='End_Customer__c'}">
+                                                    <span>
+                                                        <aura:if isTrue="{!v.sortAsc}">
+                                                            <lightning:icon iconName="utility:arrowdown" size="xx-small"/>
+                                                            <aura:set attribute="else">
+                                                                <lightning:icon iconName="utility:arrowup" size="xx-small"/>
+                                                            </aura:set>
+                                                        </aura:if>
+                                                    </span>
+                                                </aura:if>   
+                                            </a>                                
+                                        </th>
+
+                                        <aura:iteration items="{!v.dateHeaderList}" var="dhl" indexVar="count">
+                                           
+                                            <th class="staticTH" scope="colgroup" colspan="{!dhl.numofdays}"  >
+                                                
+                                                <center>
+                                                    <lightning:formattedDateTime  value="{!dhl.dateHeader}"  month="short"/>
+                                                    - 
+                                                    <lightning:formattedDateTime  value="{!dhl.dateHeader}"  year="numeric"/>
+                                                </center>
+                                            </th>
+                                        </aura:iteration>
+                                    </tr>
+                                    <tr  class="slds-line-height_reset">
+                                        <!-- <th scope="col" style="border:none !important"><div></div></th> -->
+                                        <aura:iteration items="{!v.dateList}" var="ord" indexVar="count">
+                                            <aura:if isTrue="{!ord le v.endHeaderDate &amp;&amp; ord ge v.startHeaderDate }">              
+                                                <th class="dynamicTH" scope="col">
+                                                    {!ord.day}
+                                                    <lightning:formattedDateTime  value="{!ord}"  day="numeric"/>
+                                                </th>
+                                            </aura:if>
+                                        </aura:iteration>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+                                    
+                                    <aura:iteration items="{!v.orderList}" var="ord" indexVar="count">
+                                        <tr>
+                                            <td class="staticTD" rowspan="{!ord.activitiesList.length}">
+                                                <div class="slds-truncate" title="{!ord.orderObj.CPDD__c}">
+                                                    {!ord.orderObj.CPDD__c}</div>
+                                            </td>
+                                            <td class="staticTD" rowspan="{!ord.activitiesList.length}">
+                                                <div class="slds-truncate" title="{!ord.orderObj.CDD__c}">{!ord.orderObj.CDD__c}</div>
+                                            </td>
+                                            <td class="staticTD" rowspan="{!ord.activitiesList.length}">
+                                                <div class="slds-truncate" title="{!ord.orderObj.User_Role__c}">{!ord.orderObj.User_Role__c}</div>
+                                            </td>
+                                            
+                                            
+                                            
+                                            <td class="staticTD" rowspan="{!ord.activitiesList.length}">
+                                                <div class="slds-truncate" title="{!ord.orderObj.Sales_Person__c}">{!ord.orderObj.Sales_Person__c}</div>
+                                            </td>
+                                            <td class="staticTD" rowspan="{!ord.activitiesList.length}">
+                                                <div class="slds-truncate" title="{!ord.orderObj.Name}"><a href="{!'/one/one.app?#/sObject/'+ ord.orderObj.Id + '/view'}" target="_blank">{!ord.orderObj.Name}</a></div>
+                                            </td>
+                                            <td class="staticTD" rowspan="{!ord.activitiesList.length}">
+                                                <div class="slds-truncate" title="{!ord.orderObj.End_Customer__c}">{!ord.orderObj.End_Customer__c}
+                                                    
+                                                </div>
+                                            </td>
+                                            <aura:iteration start="0" end="1" items="{!ord.activitiesList}" var="activitiesList" >
+                                                <aura:iteration items="{!activitiesList}" var="vehicleActivity" >
+                                                    <!-- <aura:if isTrue="{!vehicleActivity.vehicleActivityStartDate le v.endHeaderDate &amp;&amp; vehicleActivity.vehicleActivityStartDate ge v.startHeaderDate }">   -->
+                                                    <aura:if isTrue="{!vehicleActivity.numofdays ne 0}">
+                                                        <td colspan="{!vehicleActivity.numofdays}" scope="col" class= "{!vehicleActivity.color}">
+                                                            <center> <a href="{!'/one/one.app?#/sObject/'+ vehicleActivity.vehicleActivity.Id + '/view'}" target="_blank" style="color:white" title="{!('Planned Start Date: '+vehicleActivity.vehicleActivity.Plan_Start_Date__c+'\n'+'Plan End Date: '+vehicleActivity.vehicleActivity.Plan_End_Date__c +'\n'+'Result Start Date: '+vehicleActivity.vehicleActivity.Result_Start_Date__c +'\n'+'Result End Date: '+vehicleActivity.vehicleActivity.Result_End_Date__c )}" >{!vehicleActivity.vehicleActivity.UICode__c}</a></center>
+                                                        </td>    
+                                                    </aura:if>
+                                                    <aura:if isTrue="{!vehicleActivity.numofdays eq 0}">
+                                                        <td colspan="{!vehicleActivity.numofdays}">
+                                                        </td>    
+                                                    </aura:if>
+                                                    <!-- </aura:if> -->
+                                                </aura:iteration>
+                                            </aura:iteration>
+                                        </tr>
+                                    </aura:iteration>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            
+            <!--legends on screen-->
+            <lightning:card>
+                <div class="slds-media slds-media_center">
+                    &nbsp; &nbsp;&nbsp; &nbsp;<strong>{!$Label.c.PV_Dashboard_Legends}</strong>&nbsp; &nbsp; &nbsp; &nbsp;
+                    <span class="dot"></span> &nbsp;<strong> {!$Label.c.PV_Legends_Completed}</strong>
+                    &nbsp; &nbsp;&nbsp; &nbsp;
+                    <span class="dot1"></span> &nbsp; <strong> {!$Label.c.PV_Legends_Scheduled}</strong>
+                    &nbsp; &nbsp;&nbsp; &nbsp;
+                    <span class="dot2"></span> &nbsp; <strong>{!$Label.c.PV_Legends_Secured}</strong>
+                    &nbsp; &nbsp;&nbsp; &nbsp;
+                    <span class="dot3"></span> &nbsp; <strong>{!$Label.c.PV_Legends_Delayed}</strong>      
+                </div>   
+            </lightning:card>
+            <br/>
+        </div>
+    </article> 
+</aura:component>

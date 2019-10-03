@@ -1,0 +1,44 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId">
+	<aura:attribute name="mapMarkers" type="Object"/>
+    <aura:attribute name="zoomLevel" type="Integer" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="quickAction" type="Boolean" />
+    <aura:attribute name="notQuickAction" type="Boolean"/>
+    <aura:attribute name="sendtoParent" type="Boolean" default="false"/>
+    
+    <aura:if isTrue="{!v.quickAction}">
+        <lightning:map 
+                       mapMarkers="{! v.mapMarkers }" 
+                       zoomLevel="{!v.zoomLevel}" />
+    </aura:if>
+    <aura:if isTrue="{!v.notQuickAction}">
+        <div role="dialog" tabindex="-1" aria-labelledby="header43" aura:id="Modalbox" class="slds-modal">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close" onclick="{!c.closeMapModel}">
+                        <lightning:icon iconName="utility:close" variant="inverse" alternativeText="Utility image" />
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="header43" class="slds-text-heading--medium">{!$Label.c.PV_LocationDialog_Name}</h2>
+                </div>
+                <div class="slds-modal__content slds-p-around--medium">
+                    <div>
+                        <lightning:map 
+                       mapMarkers="{! v.mapMarkers }" 
+                       zoomLevel="{!v.zoomLevel}" />
+                    </div>
+                </div>
+                <div class="slds-modal__footer">
+                    <lightning:button variant="neutral" 
+                                      label="{!$Label.c.PV_LocationDialog_Cancel}"
+                                      title="{!$Label.c.PV_LocationDialog_Cancel}"
+                                      onclick="{! c.closeMapModel }"/>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="slds-backdrop " aura:id="Modalbackdrop"></div>
+    </aura:if>
+    
+    
+</aura:component>
